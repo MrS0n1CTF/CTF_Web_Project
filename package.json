@@ -1,0 +1,21 @@
+{
+  "name": "ctf_web_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrS0n1CTF/CTF_Web_Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrS0n1CTF/CTF_Web_Project/issues"
+  },
+  "homepage": "https://github.com/MrS0n1CTF/CTF_Web_Project#readme"
+}
