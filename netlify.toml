@@ -1,0 +1,7 @@
+[build]
+  command = "npm install"
+  publish = "."  # مكان ملف index.html
+  functions = "netlify/functions" # مكان وظائف Netlify
+
+[functions]
+  node_bundler = "esbuild"
