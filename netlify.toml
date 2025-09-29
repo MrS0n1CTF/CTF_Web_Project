@@ -1,8 +1,8 @@
 [build]
   command = "npm install"
-  publish = "."  # مكان ملف index.html
-  functions = "netlify/functions" # مكان وظائف Netlify
+  publish = "."
+  functions = "netlify/functions"
 
 [functions]
-  # تغيير التجميع إلى 'zip' لحل مشكلة 'Could not resolve "firebase-admin"'
-  node_bundler = "zip"
+  # يجب أن تكون zisi بدلاً من zip لحل مشكلة التجميع
+  node_bundler = "zisi"
