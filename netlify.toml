@@ -4,4 +4,5 @@
   functions = "netlify/functions" # مكان وظائف Netlify
 
 [functions]
-  node_bundler = "esbuild"
+  # تغيير التجميع إلى 'zip' لحل مشكلة 'Could not resolve "firebase-admin"'
+  node_bundler = "zip"
