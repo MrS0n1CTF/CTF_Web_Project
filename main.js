@@ -76,7 +76,7 @@ function updateScoreboard() {
 
         querySnapshot.forEach((doc) => {
             const user = doc.data();
-            html += <tr><td>${rank}</td><td>${user.Name || user.email}</td><td>${user.Total_score || 0}</td></tr>;
+            html += `<tr><td>${rank}</td><td>${user.Name || user.email}</td><td>${user.Total_score || 0}</td></tr>`;
             rank++;
         });
 
