@@ -67,6 +67,16 @@ Jou, [9/30/2025 11:52 AM]
 Jou, [9/30/2025 11:53 AM]
 /* style.css */
 
+/* في ملف style.css */
+
+/* إخفاء حقول التسجيل/الاسم مبدئياً */
+#login-container #name,
+#login-container #studentId,
+#login-container label[for="name"],
+#login-container label[for="studentId"],
+#login-container button[onclick="registerUser()"] {
+    display: none;
+}
 /* التنسيق الأساسي للصفحة */
 body {
     font-family: Arial, sans-serif;
