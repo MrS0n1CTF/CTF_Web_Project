@@ -8,9 +8,9 @@ import {
     query, 
     orderBy, 
     onSnapshot 
-} from "firebase/firestore";
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 
 // =========================================================
