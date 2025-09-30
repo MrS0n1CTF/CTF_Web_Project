@@ -1,106 +1,106 @@
 // main.js
-import { db } from './firebase-config.js';
-import { collection, query, orderBy, onSnapshot, getDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { auth } from './firebase-config.js';
 
-//  يجب أن يتم تصدير الدوال لاستخدامها في auth.js 
-export function initDashboard(user) {
-    // 1. عرض اسم المستخدم من Firestore
-    const userRef = doc(db, "Users", user.uid);
-    getDoc(userRef).then((docSnap) => {
-        if (docSnap.exists()) {
-            // انتبه لحالة الحرف: Name
-            document.getElementById('welcome-user').textContent = مرحباً بك يا ${docSnap.data().Name || user.email};
-        }
-    });
+// 1. IMPORT FIREBASE INSTANCES (auth and db must be exported from ./firebase-config.js)
+import { auth, db } from './firebase-config.js'; 
+
+// 2. IMPORT REQUIRED FIREBASE SDK FUNCTIONS
+import { 
+    collection, 
+    query, 
+    orderBy, 
+    onSnapshot 
+} from "firebase/firestore";
+
+import { onAuthStateChanged } from "firebase/auth";
+
+
+// =========================================================
+// DASHBOARD FUNCTIONS
+// =========================================================
+
+// التصحيح: تمت إزالة كلمة export
+function loadDashboard(user) {
+    const userName = user.displayName || user.email;
+    const welcomeElement = document.getElementById('welcome-user');
     
-    // 2. تحديث لوحة النتائج وعرض التحديات
+    if (welcomeElement) {
+        // Uses correct template literal syntax (backticks)
+        welcomeElement.textContent = Welcome, ${userName}!; 
+    }
+    
     displayChallenges();
     updateScoreboard();
 }
 
-// دالة عرض لوحة النتائج (Scoreboard)
-export function updateScoreboard() {
-    const scoreboardBody = document.querySelector('#scoreboard-table tbody');
-    
-    //  هام: اسم المجموعة هو Users بحرف U كبير 
-    const q = query(collection(db, "Users"), orderBy("Total_score", "desc"));
-
-    onSnapshot(q, (querySnapshot) => {
-        scoreboardBody.innerHTML = ''; 
-
-        querySnapshot.forEach((doc) => {
-            const user = doc.data();
-            // انتبه لحالة الحروف: Name و Total_score
-            const row = <tr><td>${user.Name}</td><td>${user.Total_score}</td></tr>;
-            scoreboardBody.innerHTML += row;
-        });
-    });
-}
-
-// دالة عرض التحديات
-export function displayChallenges() {
+// التصحيح: تمت إزالة كلمة export
+function displayChallenges() {
     const challengesArea = document.getElementById('challenges-area');
+    if (!challengesArea) return; 
 
-    //  هام: اسم المجموعة هو Challenges بحرف C كبير 
-    const q = query(collection(db, "Challenges"), orderBy("Points", "asc"));
+    const challengesQuery = query(collection(db, "Challenges"), orderBy("Points", "asc"));
 
-    onSnapshot(q, (querySnapshot) => {
-        challengesArea.innerHTML = ''; 
-
+    onSnapshot(challengesQuery, (querySnapshot) => {
+        let allChallengesHTML = ''; 
+        
         querySnapshot.forEach((doc) => {
             const challenge = doc.data();
             const challengeId = doc.id;
             
-            // انتبه لحالة الحروف: Name، Points، Description
-            const challengeHtml = 
-                <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px;">
-                    <h3>${challenge.Name} (${challenge.Points} نقطة)</h3>
-                    <p>${challenge.Description}</p>
-                    <input type="text" id="flag-input-${challengeId}" placeholder="أدخل الـ Flag">
-                    <button onclick="submitFlag('${challengeId}')">إرسال الفلاج</button>
-                    <p id="message-${challengeId}" style="font-weight: bold;"></p>
-                </div>
-            ;
-            challengesArea.innerHTML += challengeHtml;
+            const challengeHTML = 
+            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+                <h3>${challenge.Name} (${challenge.Points} points)</h3>
+                <p>${challenge.Description}</p>
+                <input type="text" id="flag-input-${challengeId}" placeholder="Enter Flag here">
+                <button onclick="submitFlag('${challengeId}')">Submit Solution</button>
+                <p id="message-${challengeId}" style="font-weight: bold;"></p>
+            </div>;
+            allChallengesHTML += challengeHTML;
         });
+        
+        challengesArea.innerHTML = allChallengesHTML;
     });
 }
 
-//  الدالة الأهم: submitFlag 
-// هذه الدالة يجب أن تكون مُعرفة على مستوى النافذة (Window) ليتم استدعاؤها من HTML
-window.submitFlag = async function(challengeId) {
-    const flag = document.getElementById(flag-input-${challengeId}).value;
-    const messageElement = document.getElementById(message-${challengeId});
+// التصحيح: تمت إزالة كلمة export
+function updateScoreboard() {
+    const scoreboardArea = document.getElementById('scoreboard-area');
+    if (!scoreboardArea) return; 
 
-    if (!auth.currentUser) {
-        messageElement.textContent = "❌ يرجى تسجيل الدخول أولاً.";
-        return;
-    }
-    const userId = auth.currentUser.uid;
+    const usersQuery = query(collection(db, "Users"), orderBy("Total_score", "desc"));
+    
+    onSnapshot(usersQuery, (querySnapshot) => {
+        let html = '<table><tr><th>Rank</th><th>Name</th><th>Score</th></tr>';
+        let rank = 1;
 
-    //  ملاحظة: هذا هو مكان استدعاء دالة Netlify الآمنة بعد النشر 
-    try {
-        messageElement.textContent = "جاري التحقق...";
-        
-        //  في بيئة التطوير المحلية، لن تعمل هذه الدالة حتى يتم نشرها على Netlify 
-        const response = await fetch(/.netlify/functions/verifyFlag, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ flag: flag, challengeId: challengeId, userId: userId }),
+        querySnapshot.forEach((doc) => {
+            const user = doc.data();
+            html += <tr><td>${rank}</td><td>${user.Name || user.email}</td><td>${user.Total_score || 0}</td></tr>;
+            rank++;
         });
 
-        const data = await response.json();
+        html += '</table>';
+        scoreboardArea.innerHTML = html;
+    });
+}
 
-        if (data.correct) {
-            messageElement.textContent = ✅ إجابة صحيحة! تم إضافة ${data.points} نقطة.;
-        } else {
-            // يمكن أن تكون الرسالة خطأ في الـ Flag أو تم حله مسبقاً
-            messageElement.textContent = ❌ ${data.message}; 
-        }
 
-    } catch (error) {
-        // خطأ يظهر عند محاولة التشغيل محلياً بدون Netlify
-        messageElement.textContent = ⚠️ لا يمكن التحقق محلياً. يرجى النشر على Netlify Function.;
+// =========================================================
+// AUTH STATE LISTENER - ENTRY POINT
+// =========================================================
+
+// This listener controls the visibility based on login status
+onAuthStateChanged(auth, (user) => {
+    const authSection = document.getElementById('auth-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+
+    if (user) {
+        // Logged in: Hide Auth, Show Dashboard
+        if (authSection) authSection.style.display = 'none';
+        if (dashboardSection) dashboardSection.style.display = 'block';
+        loadDashboard(user);
+    } else {
+        // Logged out: Show Auth, Hide Dashboard
+        if (authSection) authSection.style.display = 'block';
+        if (dashboardSection) dashboardSection.style.display = 'none';
     }
-};
+});
