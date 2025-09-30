@@ -86,3 +86,28 @@ window.submitFlag = async function(challengeId) {
     // This function needs further implementation, but we define it globally here
     alert(`Submitting flag for Challenge ID: ${challengeId} - Function is working.`);
 }
+
+// في نهاية ملف auth.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    const link = document.getElementById('toggle-mode-link');
+    if (!link) return;
+
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const isRegisterMode = link.textContent.includes('تسجيل الدخول');
+
+        // تبديل عرض الحقول والأزرار
+        document.getElementById('name').style.display = isRegisterMode ? 'none' : 'block';
+        document.getElementById('studentId').style.display = isRegisterMode ? 'none' : 'block';
+        document.querySelector('label[for="name"]').style.display = isRegisterMode ? 'none' : 'block';
+        document.querySelector('label[for="studentId"]').style.display = isRegisterMode ? 'none' : 'block';
+        
+        document.querySelector('button[onclick="registerUser()"]').style.display = isRegisterMode ? 'none' : 'block';
+        document.querySelector('button[onclick="loginUser()"]').style.display = isRegisterMode ? 'block' : 'none';
+
+        // تبديل نص الرابط
+        link.textContent = isRegisterMode ? "لا تمتلك حساب؟ إنشاء حساب جديد" : "هل لديك حساب بالفعل؟ تسجيل الدخول";
+    });
+});
