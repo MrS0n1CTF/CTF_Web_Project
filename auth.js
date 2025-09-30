@@ -24,7 +24,7 @@ window.registerUser = async function() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const name = document.getElementById('name').value;
-    const studentId = document.getElementById('studentID').value;
+    const studentId = document.getElementById('studentId').value;
 
     try {
         // 1. Create user in Firebase Authentication
