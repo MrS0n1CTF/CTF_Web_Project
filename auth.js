@@ -1,43 +1,88 @@
-// الاستيراد من ملف الإعدادات
+// auth.js
+
+// 1. IMPORT FIREBASE INSTANCES (auth and db)
 import { auth, db } from './firebase-config.js'; 
 
-// استيراد دوال المصادقة من حزمة firebase/auth
+// 2. IMPORT AUTH FUNCTIONS
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
-    onAuthStateChanged, 
-    signOut 
+    signOut,
 } from "firebase/auth";
 
-// استيراد دوال Firestore من حزمة firebase/firestore
+// 3. IMPORT FIRESTORE FUNCTIONS
 import { doc, setDoc } from "firebase/firestore";
 
-// دالة التسجيل
+
+// =========================================================
+// FUNCTION: Register New User
+// =========================================================
+
+// التصحيح الحاسم: ربط الدالة بكائن window لتكون متاحة للـ HTML (onclick)
 window.registerUser = async function() {
-    // قم باستبدال الـ IDs بأي IDs تستخدمها في index.html
-    const email = document.getElementById('email-input').value;
-    const password = document.getElementById('password-input').value;
-    const name = document.getElementById('name-input').value;
+    // يجب أن تتطابق هذه الـ IDs مع index.html (كما هو موضح في اللقطة abf5e3b7)
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const name = document.getElementById('name').value;
+    const studentId = document.getElementById('studentID').value;
 
     try {
-        // 1. إنشاء المستخدم في المصادقة (باستخدام auth المُصدّر)
+        // 1. Create user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // 2. إنشاء مستند للمستخدم في Firestore (باستخدام db المُصدّر)
+        // 2. Create user document in Firestore
         await setDoc(doc(db, "Users", user.uid), {
             Name: name,
-            Start_time: new Date(),
-            Student_id: "غير محدد",
-            Total_score: 0
+            Student_id: studentId,
+            Total_score: 0,
+            Start_time: new Date()
         });
 
-        alert("تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن.");
-        // يمكن إضافة كود لتوجيه المستخدم أو تحديث الصفحة
+        alert("Account created successfully!");
+        // لا نحتاج لـ Redirect، لأن main.js سيقوم بالتحميل التلقائي عبر onAuthStateChanged
     } catch (error) {
-        console.error("خطأ في التسجيل:", error);
-        alert("فشل التسجيل: " + error.message);
+        console.error("Registration Error:", error);
+        alert("Registration failed: " + error.message);
     }
 };
 
-// ... باقي دوال auth.js (signInUser, signOutUser, إلخ.)
+// =========================================================
+// FUNCTION: Sign In User
+// =========================================================
+
+// التصحيح الحاسم: ربط الدالة بكائن window لتكون متاحة للـ HTML (onclick)
+window.loginUser = async function() {
+    // يجب أن تتطابق هذه الـ IDs مع index.html
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Signed in successfully!");
+        // main.js will handle the dashboard display
+    } catch (error) {
+        console.error("Login Error:", error);
+        alert("Login failed: " + error.message);
+    }
+};
+
+// =========================================================
+// FUNCTION: Sign Out User (Must be called by the button in index.html)
+// =========================================================
+window.logoutUser = async function() {
+    try {
+        await signOut(auth);
+        alert("Signed out successfully.");
+    } catch (error) {
+        console.error("Logout Error:", error);
+    }
+}
+
+// =========================================================
+// FUNCTION: Submit Flag (Must be called by challenge buttons in main.js)
+// =========================================================
+window.submitFlag = async function(challengeId) {
+    // This function needs further implementation, but we define it globally here
+    alert(`Submitting flag for Challenge ID: ${challengeId} - Function is working.`);
+}
