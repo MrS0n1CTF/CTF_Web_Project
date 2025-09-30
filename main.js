@@ -1,5 +1,4 @@
 // main.js
-
 // 1. IMPORT FIREBASE INSTANCES (auth and db must be exported from ./firebase-config.js)
 import { auth, db } from './firebase-config.js'; 
 
@@ -37,6 +36,7 @@ function displayChallenges() {
     const challengesArea = document.getElementById('challenges-area');
     if (!challengesArea) return; 
 
+    // Query Firestore for Challenges
     const challengesQuery = query(collection(db, "Challenges"), orderBy("Points", "asc"));
 
     onSnapshot(challengesQuery, (querySnapshot) => {
@@ -46,14 +46,16 @@ function displayChallenges() {
             const challenge = doc.data();
             const challengeId = doc.id;
             
-            const challengeHTML = 
+            // **التصحيح النهائي:** التأكد من استخدام علامات التنصيص المائلة (` `) بشكل صحيح
+            const challengeHTML = `
             <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
                 <h3>${challenge.Name} (${challenge.Points} points)</h3>
                 <p>${challenge.Description}</p>
                 <input type="text" id="flag-input-${challengeId}" placeholder="Enter Flag here">
                 <button onclick="submitFlag('${challengeId}')">Submit Solution</button>
                 <p id="message-${challengeId}" style="font-weight: bold;"></p>
-            </div>;
+            </div>`;
+            
             allChallengesHTML += challengeHTML;
         });
         
