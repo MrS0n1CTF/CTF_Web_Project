@@ -21,6 +21,7 @@ import { doc, setDoc } from "firebase/firestore";
 // التصحيح الحاسم: ربط الدالة بكائن window لتكون متاحة للـ HTML (onclick)
 window.registerUser = async function() {
     // يجب أن تتطابق هذه الـ IDs مع index.html (كما هو موضح في اللقطة abf5e3b7)
+    console.log("REGISTER BUTTON CLICKED: Starting user creation...");
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const name = document.getElementById('name').value;
