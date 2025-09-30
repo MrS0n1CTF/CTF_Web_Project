@@ -24,7 +24,7 @@ function loadDashboard(user) {
     
     if (welcomeElement) {
         // Uses correct template literal syntax (backticks)
-        welcomeElement.textContent = Welcome, ${userName}!; 
+        welcomeElement.textContent = `Welcome, ${userName}!`; 
     }
     
     displayChallenges();
