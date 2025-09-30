@@ -94,15 +94,50 @@ function updateScoreboard() {
 onAuthStateChanged(auth, (user) => {
     const authSection = document.getElementById('auth-section');
     const dashboardSection = document.getElementById('dashboard-section');
+///
+///    if (user) {
+///        // Logged in: Hide Auth, Show Dashboard
+///        if (authSection) authSection.style.display = 'none';
+///        if (dashboardSection) dashboardSection.style.display = 'block';
+///        loadDashboard(user);
+///    } else {
+        // Logged out: Show Auth, Hide Dashboard
+///        if (authSection) authSection.style.display = 'block';
+///        if (dashboardSection) dashboardSection.style.display = 'none';
+///    }
+   // الكود المصحح/المُحسَّن (main.js)
+
+function toggleViews(user) {
+    const loginContainer = document.getElementById('login-container');
+    const dashboard = document.getElementById('ctf-dashboard');
 
     if (user) {
-        // Logged in: Hide Auth, Show Dashboard
-        if (authSection) authSection.style.display = 'none';
-        if (dashboardSection) dashboardSection.style.display = 'block';
-        loadDashboard(user);
+        // 1. إخفاء شاشة الدخول أولاً (بالتدريج)
+        loginContainer.style.opacity = '0'; 
+
+        // 2. بعد انتهاء الـ fade (500ms)، نقوم بتغيير display
+        setTimeout(() => {
+            loginContainer.style.display = 'none';
+            dashboard.style.display = 'block';
+            
+            // 3. إظهار لوحة التحكم بالتدريج
+            dashboard.style.opacity = '1';
+            loadDashboard(user);
+        }, 500); // 500ms هي مدة الـ transition في CSS
+        
     } else {
-        // Logged out: Show Auth, Hide Dashboard
-        if (authSection) authSection.style.display = 'block';
-        if (dashboardSection) dashboardSection.style.display = 'none';
+        // عند تسجيل الخروج (إخفاء لوحة التحكم)
+        dashboard.style.opacity = '0';
+
+        setTimeout(() => {
+            dashboard.style.display = 'none';
+            loginContainer.style.display = 'block';
+            loginContainer.style.opacity = '1';
+        }, 500);
     }
+}
+
+// تأكد من أن دالة onAuthStateChanged تستدعي toggleViews(user)
+// عند التحقق من حالة المستخدم
+// onAuthStateChanged(auth, toggleViews); 
 });
