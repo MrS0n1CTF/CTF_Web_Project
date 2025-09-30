@@ -11,7 +11,7 @@ import {
 
 // 3. IMPORT FIRESTORE FUNCTIONS
 //import { doc, setDoc } from "firebase/firestore";
-import { doc, setDoc } from './firebase-config.js';
+import { doc, setDoc } from 'firebase/firestore';
 
 // =========================================================
 // FUNCTION: Register New User
