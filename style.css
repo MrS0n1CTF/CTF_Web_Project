@@ -70,43 +70,7 @@ Jou, [9/30/2025 11:53 AM]
 /* في ملف style.css */
 /* style.css */
 
-/* تنسيق البانر الثابت في الأسفل */
-#developer-banner {
-    /* التثبيت: يجعله مرئياً دائماً حتى عند التمرير */
-    position: fixed; 
-    bottom: 0;       /* تثبيت في أسفل الشاشة */
-    left: 0;         /* تثبيت من اليسار */
-    width: 100%;     /* يمتد على عرض الشاشة بالكامل */
-    
-    /* التنسيق الجمالي */
-    background-color: #333; /* خلفية داكنة */
-    color: #f4f4f9;        /* نص فاتح */
-    padding: 10px 20px;
-    text-align: center;
-    font-size: 14px;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* ظل خفيف */
-    z-index: 1000; /* للتأكد من أنه يظهر فوق جميع العناصر الأخرى */
-}
 
-/* تنسيق الرابط داخل البانر */
-#developer-banner a {
-    color: #00bcd4; /* لون مميز للرابط */
-    text-decoration: none;
-    margin-left: 15px;
-    font-weight: bold;
-}
-
-#developer-banner a:hover {
-    text-decoration: underline;
-}
-
-/* ========================================================= */
-/* تأكد من إضافة padding إلى body أو أسفل العناصر الأخرى */
-/* لجعل محتوى الصفحة لا يختفي خلف البانر */
-body {
-    /* ... باقي التنسيقات */
-    padding-bottom: 40px; /* إضافة مسافة أسفل الصفحة بمقدار ارتفاع البانر */
-}
 /* إخفاء حقول التسجيل/الاسم مبدئياً */
 #login-container #name,
 #login-container #studentId,
