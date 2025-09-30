@@ -7,11 +7,11 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut 
-} from "firebase/auth"; // تأكد أن هذا السطر مكتوب هكذا
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"; // تأكد أن هذا السطر مكتوب هكذا
 
 // 3. IMPORT FIRESTORE FUNCTIONS
 //import { doc, setDoc } from "firebase/firestore";
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
 
 // =========================================================
 // FUNCTION: Register New User
