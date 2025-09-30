@@ -1,18 +1,17 @@
 // auth.js
 
-// 1. IMPORT FIREBASE INSTANCES (auth and db)
 import { auth, db } from './firebase-config.js'; 
 
-// 2. IMPORT AUTH FUNCTIONS
+// 2. استيراد دوال مصادقة Firebase (يجب أن تكون المسارات هكذا)
 import { 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, 
-    signOut,
-} from "firebase/auth";
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut 
+} from "firebase/auth"; // تأكد أن هذا السطر مكتوب هكذا
 
 // 3. IMPORT FIRESTORE FUNCTIONS
-import { doc, setDoc } from "firebase/firestore";
-
+//import { doc, setDoc } from "firebase/firestore";
+import { auth, db, doc, setDoc } from './firebase-config.js';
 
 // =========================================================
 // FUNCTION: Register New User
